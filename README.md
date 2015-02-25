@@ -5,6 +5,9 @@ Homework 04 for EE445L
 ######Homework 4: A Simple Android App
 ######Due: March 6, 2015, 11:59pm
 
+######For Bonus:
+Zipcode and county name, directions, history of past geocodes
+
 #####Objective: 
 In  this  homework  assignment,  you  will  build  your  own simple  Android  application that interacts with the Google geocoding API. Read up on the API here:
 https://developers.google.com/maps/documentation/geocoding/
