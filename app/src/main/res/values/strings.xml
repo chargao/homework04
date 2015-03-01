@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">Homework04</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="instruction">Type in an address in the textbox below</string>
     <string name="action_settings">Settings</string>
+    <string name="edit_message">Enter location</string>
+    <string name="search">Search</string>
 
 </resources>
