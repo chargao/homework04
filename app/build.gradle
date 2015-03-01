@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'MapTestKey'
+            keyPassword 'pie'
+            storeFile file('C:/Users/Daniel/android.jks')
+            storePassword 'pie'
+        }
+    }
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
     defaultConfig {
         applicationId "homework04.homework04"
         minSdkVersion 11

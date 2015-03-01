@@ -27,7 +27,7 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     //@Override
     public void onMapReady(GoogleMap map) {
         map.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
+                .position(HAMBURG)
                 .title("Marker"));
     }
 
