@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.apache.http.HttpEntity;
@@ -24,8 +27,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 
-
 public class MainActivity extends ActionBarActivity implements OnMapReadyCallback{
+    GoogleMap gMap;
+    MapFragment mapFrag;
     static final LatLng HAMBURG = new LatLng(53.558, 9.927);
     static final LatLng KIEL = new LatLng(53.551, 9.993);
 
@@ -33,13 +37,16 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFrag = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFrag.getMapAsync(this);
+        gMap = mapFrag.getMap();
+
     }
 
     //@Override
     public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions()
+        gMap=map;
+        gMap.addMarker(new MarkerOptions()
                 .position(HAMBURG)
                 .title("Marker"));
     }
@@ -70,13 +77,22 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     /** Called when the user clicks the Search button */
     public void search(){
         // Do something in response to button
+        EditText editText =(EditText) findViewById(R.id.edit_message);
+        String addr = editText.getText().toString();
+        //add some string parse here
+        LatLng newLatLng = getLatLongFromAddress(addr);
+        Marker marker = gMap.addMarker(new MarkerOptions()
+                .position(newLatLng));
+        //probably good idea to keep track of marker
 
+        TextView text = (TextView)findViewById(R.id.lat_long);
+        text.setText("Latlong:"+newLatLng.toString());
     }
 
-    //Opens an HTTP client, sends and recieves lat/long, and returns
-    public static LatLng getLatLongFromAddress(String youraddress) {
+    //Opens an HTTP client, sends and recieves lat/long as JSON, parses JSON, and returns latlng
+    public static LatLng getLatLongFromAddress(String inputaddress) {
         String uri = "http://maps.google.com/maps/api/geocode/json?address=" +
-                youraddress + "&sensor=false";
+                inputaddress + "&sensor=false";
         HttpGet httpGet = new HttpGet(uri);
         HttpClient client = new DefaultHttpClient();
         HttpResponse response;
@@ -96,7 +112,7 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
             e.printStackTrace();
         }
 
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(stringBuilder.toString());
 
