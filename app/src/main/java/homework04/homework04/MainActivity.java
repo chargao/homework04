@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     EditText editText =(EditText) findViewById(R.id.edit_message);
     String addr = editText.getText().toString();
     //add some string parse here
-    //new AsyncGeocodeRequest().execute(addr);
+    new AsyncGeocodeRequest().execute(addr);
   }
 
 
