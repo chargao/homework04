@@ -5,7 +5,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -75,7 +74,7 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
 
     /** Called when the user clicks the Search button */
-    public void search(){
+    public void searchMap(){
         // Do something in response to button
         EditText editText =(EditText) findViewById(R.id.edit_message);
         String addr = editText.getText().toString();
@@ -85,8 +84,8 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
                 .position(newLatLng));
         //probably good idea to keep track of marker
 
-        TextView text = (TextView)findViewById(R.id.lat_long);
-        text.setText("Latlong:"+newLatLng.toString());
+//        TextView text = (TextView)findViewById(R.id.lat_long);
+//        text.setText("Latlong: "+newLatLng.toString());
     }
 
     //Opens an HTTP client, sends and recieves lat/long as JSON, parses JSON, and returns latlng

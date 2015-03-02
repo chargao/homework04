@@ -19,7 +19,8 @@
         android:layout_below="@+id/instructions"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/button" />
+        android:id="@+id/button"
+        android:onClick="search"/>
 
     <EditText
         android:id="@+id/edit_message"
