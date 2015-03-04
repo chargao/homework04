@@ -3,6 +3,7 @@ package homework04.homework04;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -19,6 +20,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 
 /**
 * Created by Charlie on 3/1/2015.
@@ -28,9 +32,16 @@ public class AsyncGeocodeRequest extends AsyncTask<String, Integer, LatLng> {
 	@Override
 	protected LatLng doInBackground(String... params) {
 		Log.d("Async","doInBackground was called");
+        Log.d("Async",params[0]);
 		LatLng res=null;
-		String uri = "https://maps.googleapis.com/maps/api/geocode/json?address="+params[0];
-		HttpGet httpGet = new HttpGet(uri);
+        String uri ="https://maps.googleapis.com/maps/api/geocode/json?address=";
+        try {
+            uri = uri + URLEncoder.encode(params[0], "UTF-8");
+        }catch(UnsupportedEncodingException e){
+            Log.d("Async","NotValid scheme");
+        }
+        Log.d("Async",uri);
+        HttpGet httpGet = new HttpGet(uri);
 		HttpClient client = new DefaultHttpClient();
 		HttpResponse response;
 		StringBuilder stringBuilder = new StringBuilder();
@@ -80,8 +91,10 @@ public class AsyncGeocodeRequest extends AsyncTask<String, Integer, LatLng> {
       //the request went awry
     }
     else {
+        MainActivity.gMap.clear();
       Marker marker = MainActivity.gMap.addMarker(new MarkerOptions()
               .position(latLng));
+        MainActivity.gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
     }
 	}
 }
