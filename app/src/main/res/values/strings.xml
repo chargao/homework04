@@ -6,5 +6,6 @@
     <string name="action_settings">Settings</string>
     <string name="edit_message">Enter location</string>
     <string name="search">Search</string>
+    <string name="hist">History</string>
 
 </resources>
