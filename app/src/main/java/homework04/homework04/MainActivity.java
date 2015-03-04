@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends ActionBarActivity implements OnMapReadyCallback{
+  protected static TextView zipCounty;
   protected static GoogleMap gMap;
   MapFragment mapFrag;
   static final LatLng HAMBURG = new LatLng(53.558, 9.927);
@@ -26,6 +28,7 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     mapFrag = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
     mapFrag.getMapAsync(this);
     gMap = mapFrag.getMap();
+    zipCounty = (TextView) findViewById(R.id.zip_county);
   }
 
   @Override
@@ -54,7 +57,6 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     if (id == R.id.action_settings) {
       return true;
     }
-
     return super.onOptionsItemSelected(item);
   }
 
@@ -66,6 +68,4 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     //add some string parse here
     new AsyncGeocodeRequest().execute(addr);
   }
-
-
 }

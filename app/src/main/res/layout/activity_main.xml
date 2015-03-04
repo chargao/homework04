@@ -48,9 +48,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lat_long"
+        android:id="@+id/zip_county"
         android:layout_below="@+id/map"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        />
 
 </RelativeLayout>

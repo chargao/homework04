@@ -2,6 +2,7 @@ package homework04.homework04;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -29,19 +30,22 @@ import java.net.URLEncoder;
 * Opens an HTTP client, sends and recieves lat/long as JSON, parses JSON, and returns latlng
 */
 public class AsyncGeocodeRequest extends AsyncTask<String, Integer, LatLng> {
+	private String zip;
+	private String county;
+
 	@Override
 	protected LatLng doInBackground(String... params) {
 		Log.d("Async","doInBackground was called");
-        Log.d("Async",params[0]);
+				Log.d("Async",params[0]);
 		LatLng res=null;
-        String uri ="https://maps.googleapis.com/maps/api/geocode/json?address=";
-        try {
-            uri = uri + URLEncoder.encode(params[0], "UTF-8");
-        }catch(UnsupportedEncodingException e){
-            Log.d("Async","NotValid scheme");
-        }
-        Log.d("Async",uri);
-        HttpGet httpGet = new HttpGet(uri);
+				String uri ="https://maps.googleapis.com/maps/api/geocode/json?address=";
+				try {
+						uri = uri + URLEncoder.encode(params[0], "UTF-8");
+				}catch(UnsupportedEncodingException e){
+						Log.d("Async","NotValid scheme");
+				}
+				Log.d("Async",uri);
+				HttpGet httpGet = new HttpGet(uri);
 		HttpClient client = new DefaultHttpClient();
 		HttpResponse response;
 		StringBuilder stringBuilder = new StringBuilder();
@@ -55,10 +59,10 @@ public class AsyncGeocodeRequest extends AsyncTask<String, Integer, LatLng> {
 				stringBuilder.append((char) b);
 			}
 		}
-    catch (ClientProtocolException e) {
+		catch (ClientProtocolException e) {
 			e.printStackTrace();
 		}
-    catch (IOException e) {
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -66,20 +70,38 @@ public class AsyncGeocodeRequest extends AsyncTask<String, Integer, LatLng> {
 		try {
 			jsonObject = new JSONObject(stringBuilder.toString());
 
-			double lng = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
-			.getJSONObject("geometry").getJSONObject("location")
-			.getDouble("lng");
+			JSONObject location = ((JSONArray)jsonObject.get("results")) //for lat long
+							.getJSONObject(0)
+							.getJSONObject("geometry")
+							.getJSONObject("location");
 
-			double lat = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
-			.getJSONObject("geometry").getJSONObject("location")
-			.getDouble("lat");
+			JSONArray address_components= ((JSONArray)jsonObject.get("results")) //for zip county
+							.getJSONObject(0)
+							.getJSONArray("address_components");
 
+			double lng = location.getDouble("lng");
+			double lat = location.getDouble("lat");
+
+			zip = "n/a";
+			county= "n/a";
+			//looking for zip and county
+			for (int i = 0; i<address_components.length();i++){
+				String type = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
+								.getJSONArray("address_components").getJSONObject(i)
+								.getJSONArray("types").getString(0);
+				if(type.equals("postal_code")){
+					zip = address_components.getJSONObject(i).getString("short_name");
+				}
+        else if (type.equals("administrative_area_level_2")){
+          county = address_components.getJSONObject(i).getString("short_name");
+        }
+			}
 			//Set new lat long
 			res = new LatLng(lat, lng);
 		}
-    catch (JSONException e) {
-      e.printStackTrace();
-    }
+		catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return res;
 	}
 
@@ -87,14 +109,21 @@ public class AsyncGeocodeRequest extends AsyncTask<String, Integer, LatLng> {
 	protected void onPostExecute(LatLng latLng) {
 		super.onPostExecute(latLng);
 
-    if (latLng==null){
-      //the request went awry
-    }
-    else {
-        MainActivity.gMap.clear();
-      Marker marker = MainActivity.gMap.addMarker(new MarkerOptions()
-              .position(latLng));
-        MainActivity.gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
-    }
+		if (latLng==null){
+			//the request went awry
+		}
+		else {
+			MainActivity.gMap.clear();
+			Marker marker = MainActivity.gMap.addMarker(new MarkerOptions()
+							.position(latLng));
+			MainActivity.gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
+
+      Log.d("Async",zip); //debug, remove in production
+			Log.d("Async", county);
+			TextView zc=MainActivity.zipCounty;
+
+      String msg = new StringBuilder().append("Zip: ").append(zip).append(" County: ").append(county).toString();
+      zc.setText(msg);
+		}
 	}
 }
