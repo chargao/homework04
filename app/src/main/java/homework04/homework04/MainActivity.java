@@ -1,5 +1,6 @@
 package homework04.homework04;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -15,11 +16,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends ActionBarActivity implements OnMapReadyCallback{
+  static final LatLng HAMBURG = new LatLng(53.558, 9.927);
   protected static TextView zipCounty;
   protected static GoogleMap gMap;
   MapFragment mapFrag;
-  static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-  //static final LatLng KIEL = new LatLng(53.551, 9.993);
 
   @Override
   protected void onCreate (Bundle savedInstanceState) {
@@ -67,5 +67,10 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     String addr = editText.getText().toString();
     //add some string parse here
     new AsyncGeocodeRequest().execute(addr);
+  }
+
+  public void getDir(View view) {
+    Intent intent = new Intent(this, DirectionsActivity.class);
+    startActivity(intent);
   }
 }

@@ -7,5 +7,12 @@
     <string name="edit_message">Enter location</string>
     <string name="search">Search</string>
     <string name="hist">History</string>
+    <string name="get_dir">Get Directions</string>
+
+    <string name="title_activity_directions">DirectionsActivity</string>
+    <string name="dir_input_origin">Enter origin</string>
+    <string name="dir_input_destination">Enter destination</string>
+    <string name="dir_instructions">Type the origin and destination below</string>
+    <string name="submit">Submit</string>
 
 </resources>
