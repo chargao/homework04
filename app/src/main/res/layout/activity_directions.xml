@@ -18,8 +18,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <!--Text input for address-->
-    <EditText
-        android:id="@+id/dir_addr_1"
+    <AutoCompleteTextView
+        android:id="@+id/from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -27,18 +27,22 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/dir_instruc"
+        android:layout_gravity="fill_horizontal"
+        android:completionThreshold="3"
         android:hint="@string/dir_input_origin"/>
 
     <!--Text input 2 for address 2-->
-    <EditText
-        android:id="@+id/dir_addr_2"
+    <AutoCompleteTextView
+        android:id="@+id/to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/dir_addr_1"
+        android:layout_below="@+id/from"
+        android:layout_gravity="fill_horizontal"
+        android:completionThreshold="3"
         android:hint="@string/dir_input_destination"/>
 
     <!--Submit button-->
@@ -48,7 +52,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/dir_addr_2"
+        android:layout_below="@+id/to"
+        android:onClick="dir"
         android:text="@string/submit"/>
 
 </RelativeLayout>

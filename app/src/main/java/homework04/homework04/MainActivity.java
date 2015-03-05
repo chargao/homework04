@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,11 +16,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 public class MainActivity extends ActionBarActivity implements OnMapReadyCallback{
   static final LatLng HAMBURG = new LatLng(53.558, 9.927);
   protected static TextView zipCounty;
   protected static GoogleMap gMap;
   MapFragment mapFrag;
+  static List<LatLng> steps = null;
 
   @Override
   protected void onCreate (Bundle savedInstanceState) {
@@ -29,6 +33,10 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     mapFrag.getMapAsync(this);
     gMap = mapFrag.getMap();
     zipCounty = (TextView) findViewById(R.id.zip_county);
+
+    AutoCompleteTextView dest = (AutoCompleteTextView) findViewById(R.id.edit_message);
+    dest.setText("");
+    dest.setAdapter(new PlacesAutoCompleteAdapter(this, android.R.layout.simple_dropdown_item_1line));
   }
 
   @Override
